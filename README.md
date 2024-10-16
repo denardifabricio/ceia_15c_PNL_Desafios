@@ -1,8 +1,6 @@
 ![img1](https://github.com/hernancontigiani/ceia_memorias_especializacion/raw/master/Figures/logoFIUBA.jpg)
 
 
-# Esta portada se encuentra en Desarrollo
-
 ## Alumno
 Denardi, Fabricio
 
@@ -13,6 +11,9 @@ Denardi, Fabricio
 Les presento mi portfolio de desafíos superados durante el cursado de la asignatura **Procesamiento del Lenguaje Natural** del *Curso de Especialización en Inteligencia Artificial* dictado por la *Universidad de Buenos Aires (UBA)*
 
 Les iré contando un resumen de cada uno de ellos y un link a la Jupiter Notebook principal en donde podrán ver en detalle todos los trabajos realizados.
+
+## Comentario importante
+Para terminar de comprender las conclusiones, ejemplos brindados y detalle, les recomiendo visitar cada una de las notebooks de los diferentes desafíos, cuyo link dejo más abajo con la leyenda 'Colab' y el número de desafío
 
 # Desafío 1
 ## Vectorización de texto y modelo de clasificación Naïve Bayes con el dataset 20 newsgroups
@@ -105,7 +106,7 @@ El F1 score con average macro para el modelo ComplementNB es: 0.6919
 #### Estudio de similaridad de palabras
 El objetivo fue transponer la matriz documento-término. De esa manera se obtiene una matriz término-documento que puede ser interpretada como una colección de vectorización de palabras. 
 
-Adicionalmente debí estudiar ahora similaridad entre palabras tomando 5 palabras y estudiando sus 5 más similares. 
+Adicionalmente debí estudiar ahora similaridad entre palabras tomando X palabras y estudiando sus X más similares. 
 
 
 **El resultado fue bastante bueno:**
@@ -147,6 +148,7 @@ dealer
 
 - El punto anterior considero que se debe a que estos modelos no interpretan el contexto, es decir, en dónde esta la palabra y sus término vecinos.
 
+Para entender mejor, ir a la notebook y revisar los ejemplos.
 
 # Desafío 2
 ## Custom embedddings con Gensim
