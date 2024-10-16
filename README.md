@@ -312,12 +312,125 @@ Colab: [desafio_4](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob
 El objecto es utilizar datos disponibles del challenge ConvAI2 (Conversational Intelligence Challenge 2) de conversaciones en inglés. Se construirá un BOT para responder a preguntas del usuario (QA).\
 
 
-![img1](https://github.com/hernancontigiani/ceia_memorias_especializacion/raw/master/Figures/logoFIUBA.jpg)
+### Modelo entrenado
+Se entrenó un modelo con la siguiente arquitectura:
+
+![img1](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%204/modelo.png)
+
+
+Y el resultado logrado fue:
+```
+-----------------------------
+Ejemplo 0/6 - HOW ARE YOU?
+-----------------------------
+Representacion en vector de tokens de ids [10, 7, 2]
+Padding del vector: [[ 0  0  0  0  0  0 10  7  2]]
+Input: How Are you?
+>>> Response: I AM DOING WELL HOW ARE YOU
+
+-----------------------------
+Ejemplo 1/6 - DO YOU READ?
+-----------------------------
+Representacion en vector de tokens de ids [3, 2, 23]
+Padding del vector: [[ 0  0  0  0  0  0  3  2 23]]
+Input: Do you read?
+>>> Response: I DO I LOVE TO READ
+
+-----------------------------
+Ejemplo 2/6 - DO YOU HAVE ANY PET?
+-----------------------------
+Representacion en vector de tokens de ids [3, 2, 16, 31, 252]
+Padding del vector: [[  0   0   0   0   3   2  16  31 252]]
+Input: Do you have any pet?
+>>> Response: YES I HAVE A TIGER
+
+-----------------------------
+Ejemplo 3/6 - WHERE ARE YOU FROM?
+-----------------------------
+Representacion en vector de tokens de ids [52, 7, 2, 39]
+Padding del vector: [[ 0  0  0  0  0 52  7  2 39]]
+Input: Where are you from?
+>>> Response: I AM FROM THE UNITED STATES
+
+
+-----------------------------
+Ejemplo 4/6 - WHAT IS YOUR NAME?
+-----------------------------
+Representacion en vector de tokens de ids [4, 15, 21, 51]
+Padding del vector: [[ 0  0  0  0  0  4 15 21 51]]
+Input: What is your name?
+>>> Response: I AM NOT SURE WHAT YOU MEAN
+
+
+-----------------------------
+Ejemplo 5/6 - DO YOU LIKE CHOCHOLATE?
+-----------------------------
+Representacion en vector de tokens de ids [3, 2, 12]
+Padding del vector: [[ 0  0  0  0  0  0  3  2 12]]
+Input: Do you like chocholate?
+>>> Response: YES
+```
+
+#### Conclusiones
+- Muchas preguntas fueron respondidas con cocherencia semántica, es decir que guardan relación con lo preguntado. En cambio, otras no, o al menos son ambiguas, lo que motiva a futuro a:
+    - Utilizar y aprovechar más recursos computacionales.
+    - Realizar una reingeniería de la red para hacerla lo sufucientemente compleja.
+    - Utilizar Transfer Learning  y luego fine tuning a partir de modelos ya probados.
+
+- Contrariamente a lo que esperaba, apilar una capa LSTM extra no mejoró la performance del modelo. Esto puede deberse a un sobreajuste, a un vanish del gradiente, a que no tenemos datos suficientes, entre otros.
+
+- Un punto interesante es que a pesar de no tener una valid loss demasiado buena y con tendencia al sobreajuste, la performance resultó moderadamente buena.
 
 
 # Desafío 5
 ## Bert Sentiment Analysis
 Colab: [desafio_5](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/Desafio_5.ipynb)
+
+## Objetivo
+Desarrollar un modelo de análisis de sentimiento
+
+### Modelo entrenado
+```
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                Output Shape                 Param #   Connected to                  
+==================================================================================================
+ input_ids (InputLayer)      [(None, 280)]                0         []                            
+                                                                                                  
+ attention_mask (InputLayer  [(None, 280)]                0         []                            
+ )                                                                                                
+                                                                                                  
+ tf_bert_model (TFBertModel  TFBaseModelOutputWithPooli   1094822   ['input_ids[0][0]',           
+ )                           ngAndCrossAttentions(last_   40         'attention_mask[0][0]']      
+                             hidden_state=(None, 280, 7                                           
+                             68),                                                                 
+                              pooler_output=(None, 768)                                           
+                             , past_key_values=None, hi                                           
+                             dden_states=None, attentio                                           
+                             ns=None, cross_attentions=                                           
+                             None)                                                                
+                                                                                                  
+ dropout_37 (Dropout)        (None, 768)                  0         ['tf_bert_model[0][1]']       
+                                                                                                  
+ dense (Dense)               (None, 128)                  98432     ['dropout_37[0][0]']          
+                                                                                                  
+ dropout_38 (Dropout)        (None, 128)                  0         ['dense[0][0]']               
+                                                                                                  
+ dense_1 (Dense)             (None, 5)                    645       ['dropout_38[0][0]']          
+                                                                                                  
+==================================================================================================
+Total params: 109581317 (418.02 MB)
+Trainable params: 99077 (387.02 KB)
+Non-trainable params: 109482240 (417.64 MB)
+__________________________________________________________________________________________________
+```
+
+### Conclusiones
+- Respecto a la heurística (azar del 20%, dado que son 5 clases) hay una mejora  pero resta mucho por mejorar.
+
+- Quizás también podamos aumentar la cantidad de épocas, según vemos el gráfico, hay espacio para que el modelo siga aprendiendo. Por una cuestión de disponibilidad de recursos, lo dejé aquí.
+
+- Como siempre se propone a futuro y para entornos productivos, realizar fine tuning con Cross Validation, Optuna o algún otro framework para tal fin.
 
 # ¡Gracias por leer cada uno de los desafíos en los que participé!
 Si querés conocer más de mí o tenés alguna consulta, podés escribirme a  _denardifabricio@gmail.com_ 
