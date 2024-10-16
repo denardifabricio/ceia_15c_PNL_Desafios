@@ -176,7 +176,7 @@ w2v_model.wv.most_similar(negative=["pepper"], topn=10)
 
 
 También podemos ver un fragmento del gráfico de baja dimensionalidad:
-![BajaDim](/Desafio 2/plot.png)
+![img1](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%202/plot.png)
 
 
 
@@ -193,9 +193,127 @@ También podemos ver un fragmento del gráfico de baja dimensionalidad:
 ## Modelo de lenguaje con tokenización por palabras y caracteres
 Colab: [desafio_3](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%203/Desafio_3.ipynb)
 
+El TP fue dividido en 2 sub notebooks:
+[desafio_3_modelo_lenguaje_natural_char.ipynb](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%203/desafio_3_modelo_lenguaje_natural_char.ipynb) se trabajó con un modelo de lenguaje natural basado en caracteres y en [desafio_3_modelo_lenguaje_natural_word.ipynb](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%203/desafio_3_modelo_lenguaje_natural_word.ipynb) con un modelo de lenguaje natural basado en palabras.
+
+### Dataset
+Se trabajó con los mismos recetarios del desafío anterior
+
+### Objetivos
+- Seleccionar un corpus de texto sobre el cual entrenar el modelo de lenguaje.
+- Realizar el pre-procesamiento adecuado para tokenizar el corpus, estructurar el dataset y separar entre datos de entrenamiento y validación.
+- Proponer arquitecturas de redes neuronales basadas en unidades recurrentes para implementar un modelo de lenguaje.
+- Con el o los modelos que consideren adecuados, generar nuevas secuencias a partir de secuencias de contexto con las estrategias de greedy search y beam search determístico y estocástico. En este último caso observar el efecto de la temperatura en la generación de secuencias.
+
+
+
+### Modelo basado en caracteres
+La arquitectura del mejor modelo logrado fue:
+```
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ time_distributed (TimeDistr  (None, None, 139)        0         
+ ibuted)                                                         
+                                                                 
+ simple_rnn (SimpleRNN)      (None, None, 200)         68000     
+                                                                 
+ dense (Dense)               (None, None, 139)         27939     
+                                                                 
+=================================================================
+Total params: 95,939
+Trainable params: 95,939
+Non-trainable params: 0
+_________________________________________________________________
+```
+
+Y como resultados de validación obtuve:
+```
+Input: add salt to the
+Ouput:add salt to the oven 
+----------------------------------
+Input: put the chicken in the
+Ouput:put the chicken in the oven 
+----------------------------------
+Input: heat the oil in a
+Ouput:heat the oil in a large
+----------------------------------
+Input: add the flour to the
+Ouput:add the flour to the sauce
+----------------------------------
+Input: mix the eggs with the
+Ouput:mix the eggs with the sauce
+----------------------------------
+```
+
+#### Conclusiones
+- Encontré que el costo computacional del entrenamiento del modelo es muy alto. Considerando que limité bastante el número de recetas, en un ambiente productivo, no lo veo óptimo para su uso. Esto se repite tanto como en el modelo de word como este, aunque aquí, al procesar por caracteres, se refuerza esta problemática.
+
+- En cuanto a la predicción de secuencias, noto que las primeras palabras tienen sentido, no así si intentamos predecir una cadena más larga, en donde, a pesar de encontrar palabras del idioma inglés (las recetas están escritas en dicho idioma), se va perdiendo el sentido de la oración, por ej: "add salt to the pasta into the pasta into the".
+
+- Utilizando beam search y muestreo aleatorio, y a pesar de la simplesa del algoritmo y que limité el número de recetas, encuentro que las secuencia sugerencias tienen un léxico coherente, en cuanto a la semántica, tal vez falla en algunas, por ejemplo, uno no agrega sal dentro del horno, pero sí se lo hace con un pollo (predicción correcta encontrada por el modelo también)
+
+- Comparando el modelo por palabras y por caracter, considero que, aunque no con grandes diferencias, el modelo por caracter tienen mejor accuracy, analizándolo semánticamente, es decir revisando si la salida de las predicciones tienen sentido en el contexto de las recetas de cocina.
+
+
+### Modelo basado en caracteres
+```
+Model: "sequential_2"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ embedding_2 (Embedding)     (None, None, 50)          197450    
+                                                                 
+ lstm_4 (LSTM)               (None, None, 100)         60400     
+                                                                 
+ dropout_1 (Dropout)         (None, None, 100)         0         
+                                                                 
+ lstm_5 (LSTM)               (None, None, 100)         80400     
+                                                                 
+ dense_2 (Dense)             (None, None, 3949)        398849    
+                                                                 
+=================================================================
+Total params: 737,099
+Trainable params: 737,099
+Non-trainable params: 0
+_________________________________________________________________
+```
+
+Y como resultados de validación obtuve:
+```
+Input: add salt to the
+['add salt to the sides and cook for a wooden']
+Input: put the chicken in the
+['put the chicken in the heat and cook for 1 5']
+Input: heat the oil in a
+['heat the oil in a large saucepan add the potatoes and']
+Input: add the flour to the
+['add the flour to the top of the cheese and took']
+Input: mix the eggs with the
+['mix the eggs with the butter and pepper to another her']
+```
+#### Conclusiones
+- Encontré que el costo computacional del entrenamiento del modelo es muy alto. Considerando que limité bastante el número de recetas, en un ambiente productivo, no lo veo óptimo para su uso.
+
+- La predicción de secuencia si bien respeta el léxico de recetas, semanticamente no lo veo tan bueno conforme se intenta predecir mayor cantidad de palabras.
+
+- En cuanto a los hiperparámetros del modelo, intenté con diferentes números de embeddings, pero el mejor fue el inicial, con 50 de ellos. 
+
+- Tuve que agregar un dropout porque a partir de la época 8/10 comenzaba a tener un gran overfitting, esto no solo hizo que el overfitting disminuyera notablemente sino que mejoró la calida de la respuesta (semánticamente, es decir el el sentido de las frases en el contexto de las recetas).
+
+- Adicionalmente, probé con diferentes criterios del tamaño de secuencia, siendo el del percentile, el que me funcionó mejor.
+
 # Desafío 4
 ## LSTM Bot QA
 Colab: [desafio_4](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%204/Desafio_4.ipynb)
+
+## Objetivo
+El objecto es utilizar datos disponibles del challenge ConvAI2 (Conversational Intelligence Challenge 2) de conversaciones en inglés. Se construirá un BOT para responder a preguntas del usuario (QA).\
+
+
+![img1](https://github.com/hernancontigiani/ceia_memorias_especializacion/raw/master/Figures/logoFIUBA.jpg)
+
 
 # Desafío 5
 ## Bert Sentiment Analysis
