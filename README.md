@@ -257,7 +257,12 @@ Ouput:mix the eggs with the sauce
 - Comparando el modelo por palabras y por caracter, considero que, aunque no con grandes diferencias, el modelo por caracter tienen mejor accuracy, analizándolo semánticamente, es decir revisando si la salida de las predicciones tienen sentido en el contexto de las recetas de cocina.
 
 
-### Modelo basado en caracteres
+### Modelo basado en palabras
+
+La longitud de las secuencias es la siguiente y me permitió ajustar los parámetros del modelo:
+
+![img1](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%203/longitud_word.png)
+
 ```
 Model: "sequential_2"
 _________________________________________________________________
