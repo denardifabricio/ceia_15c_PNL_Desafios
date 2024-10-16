@@ -90,9 +90,8 @@ naive_classifier = ComplementNB(alpha=0.1, force_alpha=True, fit_prior=False, cl
 print("Complement Naive Bayes - Fine tuning")
 analize_naive_bayes(naive_classifier)
 ```
-naive_classifier = ComplementNB(alpha=0.1, force_alpha=True, fit_prior=False, class_prior=None, norm=False)
-print("Complement Naive Bayes - Fine tuning")
-analize_naive_bayes(naive_classifier)
+Complement Naive Bayes - Fine tuning
+El F1 score con average macro para el modelo ComplementNB es: 0.6919
 
 
 #### Conclusiones más importantes:
