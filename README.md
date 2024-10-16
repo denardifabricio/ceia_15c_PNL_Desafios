@@ -19,7 +19,7 @@ Les iré contando un resumen de cada uno de ellos y un link a la Jupiter Noteboo
 Colab: [desafio_1](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%201/Desafio_1.ipynb)
 
 ### Breve Resumen
-La idea fue lograr vectorizar documentos de diferentes categorías y lograr categorizarlos. Luego obtener los documentos más similares (usando similitud del coseno) y chequear  que correspondan a la misma categoría:
+La idea fue lograr vectorizar documentos de diferentes categorías y lograr identificar dicha categoría. Luego obtener los documentos más similares (usando similitud del coseno) y chequear  que correspondan a la misma categoría:
 
 
 Por ejemplo:
@@ -61,12 +61,39 @@ La categoría del mismo es: "sci.electronics".
 #### Naive Bayes
 Luego se procedió a entrenar modelos de clasificación Naïve Bayes para maximizar el desempeño de clasificación (f1-score macro) en el conjunto de datos de test. 
 
-El modelo ganador  fue:
+```
+naive_classifier = MultinomialNB()
+print("Naive Bayes - Parámetros por defecto")
+analize_naive_bayes(naive_classifier)
+```
+Naive Bayes - Parámetros por defecto
+El F1 score con average macro para el modelo MultinomialNB es: 0.6468
+
 ```
 naive_classifier = MultinomialNB(alpha=0.01, force_alpha=True, fit_prior=False, class_prior=None)
 print("Naive Bayes - Fine tuning")
 analize_naive_bayes(naive_classifier)
 ```
+Naive Bayes - Fine tuning
+El F1 score con average macro para el modelo MultinomialNB es: 0.6877
+
+```
+naive_classifier = ComplementNB()
+print("Complement Naive Bayes - Parámetros por defecto")
+analize_naive_bayes(naive_classifier)
+```
+Complement Naive Bayes - Parámetros por defecto
+El F1 score con average macro para el modelo ComplementNB es: 0.6936
+
+```
+naive_classifier = ComplementNB(alpha=0.1, force_alpha=True, fit_prior=False, class_prior=None, norm=False)
+print("Complement Naive Bayes - Fine tuning")
+analize_naive_bayes(naive_classifier)
+```
+naive_classifier = ComplementNB(alpha=0.1, force_alpha=True, fit_prior=False, class_prior=None, norm=False)
+print("Complement Naive Bayes - Fine tuning")
+analize_naive_bayes(naive_classifier)
+
 
 #### Conclusiones más importantes:
 - Realizar un fine tuning de los parámetros de los modelos resultó una buena elección. Proporcionalmente, tuvo mayor efecto en el Naive Bayes que en el Complement Naive Bayes.
