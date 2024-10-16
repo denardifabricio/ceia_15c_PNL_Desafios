@@ -387,7 +387,10 @@ Input: Do you like chocholate?
 Colab: [desafio_5](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/Desafio_5.ipynb)
 
 ## Objetivo
-Desarrollar un modelo de análisis de sentimiento
+Desarrollar un modelo de análisis de sentimiento.
+
+Se trabajó con un dataset de críticas, cuyas clases, como podemos ver están desbalanceadas:
+[img](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/clases2.png)
 
 ### Modelo entrenado
 ```
@@ -424,6 +427,10 @@ Trainable params: 99077 (387.02 KB)
 Non-trainable params: 109482240 (417.64 MB)
 __________________________________________________________________________________________________
 ```
+
+PAra ver la performance, podemos ver la matriz de confusión:
+Se trabajó con un dataset de críticas, cuyas clases, como podemos ver están desbalanceadas:
+[img](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/matrix.png)
 
 ### Conclusiones
 - Respecto a la heurística (azar del 20%, dado que son 5 clases) hay una mejora  pero resta mucho por mejorar.
