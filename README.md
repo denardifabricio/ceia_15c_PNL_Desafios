@@ -430,7 +430,8 @@ ________________________________________________________________________________
 
 PAra ver la performance, podemos ver la matriz de confusión:
 Se trabajó con un dataset de críticas, cuyas clases, como podemos ver están desbalanceadas:
-[img](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/matrix.png)
+
+[img1](https://github.com/denardifabricio/ceia_15c_PNL_Desafios/blob/main/Desafio%205/matrix.png)
 
 ### Conclusiones
 - Respecto a la heurística (azar del 20%, dado que son 5 clases) hay una mejora  pero resta mucho por mejorar.
